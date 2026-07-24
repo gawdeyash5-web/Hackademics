@@ -47,6 +47,7 @@ import { coralFish } from "../engine/CoralFishController";
 import ExpeditionIntro from "./ExpeditionIntro";
 import DepthMeter from "./DepthMeter";
 import ReturnButton from "./ReturnButton";
+import UnderwaterOverlay from "./UnderwaterOverlay";
 import {
   PROPELLER_OFFSET_X,
   PROPELLER_OFFSET_Y,
@@ -489,7 +490,7 @@ const worldMouseY = Math.round(camera.current.y + mouse.current.y);
   facingRight={facingRight.current}
 />
       </div>
-
+<UnderwaterOverlay />
 <DoryEncounterButton />
 
 <CoralInfoCard />
