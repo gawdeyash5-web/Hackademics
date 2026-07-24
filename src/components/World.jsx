@@ -31,6 +31,13 @@ import {
     startWhale,
 } from "../engine/WhaleController";
 import CoralFish from "./CoralFish";
+import DoryVideo from "./DoryVideo";
+import DoryEncounterButton from "./DoryEncounterButton";
+import CoralInfoCard from "./CoralInfoCard";
+import DoryNPC from "./DoryNPC";
+import DoryDialogue from "./DoryDialogue";
+import { doryFamily } from "../engine/DoryFamily";
+import doryController from "../engine/DoryController";
 import { coralFish } from "../engine/CoralFishController";
 import {
   PROPELLER_OFFSET_X,
@@ -55,9 +62,9 @@ function World() {
   const bubbleId = useRef(0);
   const lastBubbleTime = useRef(0);
   const submarine = useRef({
-    x: WORLD_WIDTH / 2,
-    y: WORLD_HEIGHT / 2,
-  });
+    x: 2031,
+    y: 531,
+});
 
   const mouse = useRef({
     x: window.innerWidth / 2,
@@ -75,7 +82,8 @@ const turtle = useRef({
 const barracuda = useRef(createBarracuda());
 const whale = useRef(createWhale());
 const [whaleSequence, setWhaleSequence] = useState(false);
-const [cameraMode, setCameraMode] = useState("submarine");
+const [cameraMode, setCameraMode] = useState("submarine"); 
+const doryTriggered = useRef(false);
   useEffect(() => {
     const move = (e) => {
       mouse.current.x = e.clientX;
@@ -167,6 +175,38 @@ bubbles.current = bubbles.current.filter((bubble) => {
 
 updateTurtle(turtle.current);
 updateBarracuda(barracuda.current, 1 / 60);
+// -------------------------
+// DORY ENCOUNTER TRIGGER
+// -------------------------
+
+const DORY_X = 1700;
+const DORY_Y = 2600;
+
+const distanceToDory = Math.hypot(
+    submarine.current.x - DORY_X,
+    submarine.current.y - DORY_Y
+);
+
+if (distanceToDory < 450) {
+
+    if (!doryTriggered.current) {
+
+        doryTriggered.current = true;
+        doryController.playerEnteredZone();
+
+    }
+
+}
+else {
+
+    if (doryTriggered.current) {
+
+        doryTriggered.current = false;
+        doryController.playerLeftZone();
+
+    }
+
+}
 if (whaleSequence) {
     updateWhale(whale.current, 1 / 60);
 
@@ -285,6 +325,15 @@ const worldMouseY = Math.round(camera.current.y + mouse.current.y);
         <Background />
 
          <CoralReef />
+         {doryFamily.map((fish) => (
+    <DoryVideo
+        key={fish.id}
+        x={fish.x}
+        y={fish.y}
+        width={85}
+        height={48}
+    />
+))}
         <DeepCliff />
         <CliffContinue2 />
         <CliffContinue />
@@ -398,8 +447,18 @@ const worldMouseY = Math.round(camera.current.y + mouse.current.y);
   facingRight={facingRight.current}
 />
       </div>
-    </div>
-  );
+
+<DoryEncounterButton />
+
+<CoralInfoCard />
+
+<DoryNPC />
+
+<DoryDialogue />
+
+</div>
+);
+
 }
 
 export default World;
