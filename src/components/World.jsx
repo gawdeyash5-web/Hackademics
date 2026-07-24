@@ -24,7 +24,7 @@ import {
     updateBarracuda,
 } from "../engine/BarracudaController";
 import Whale from "./Whale";
-
+import Ship from "./Ship";
 import {
     createWhale,
     updateWhale,
@@ -36,9 +36,17 @@ import DoryEncounterButton from "./DoryEncounterButton";
 import CoralInfoCard from "./CoralInfoCard";
 import DoryNPC from "./DoryNPC";
 import DoryDialogue from "./DoryDialogue";
+import InfoButton from "./InfoButton";
+import InfoCard from "./InfoCard";
+
+import infoController from "../engine/InfoController";
+import infoPoints from "../engine/InfoPoints";
 import { doryFamily } from "../engine/DoryFamily";
 import doryController from "../engine/DoryController";
 import { coralFish } from "../engine/CoralFishController";
+import ExpeditionIntro from "./ExpeditionIntro";
+import DepthMeter from "./DepthMeter";
+import ReturnButton from "./ReturnButton";
 import {
   PROPELLER_OFFSET_X,
   PROPELLER_OFFSET_Y,
@@ -175,6 +183,39 @@ bubbles.current = bubbles.current.filter((bubble) => {
 
 updateTurtle(turtle.current);
 updateBarracuda(barracuda.current, 1 / 60);
+
+
+
+
+
+let activePoint = null;
+
+for (const point of infoPoints) {
+
+  const distance = Math.hypot(
+    submarine.current.x - point.x,
+    submarine.current.y - point.y
+  );
+
+  if (distance < point.radius) {
+    activePoint = point;
+    break;
+  }
+}
+
+if (activePoint) {
+
+  if (infoController.getActive()?.id !== activePoint.id) {
+    infoController.show(activePoint);
+  }
+
+} else {
+
+  if (!infoController.getActive()?.open) {
+    infoController.hide();
+  }
+
+}
 // -------------------------
 // DORY ENCOUNTER TRIGGER
 // -------------------------
@@ -341,7 +382,7 @@ const worldMouseY = Math.round(camera.current.y + mouse.current.y);
         <Cliff />
         <CaveSystem />
         <CaveSystem2 />
-        
+        <Ship />
         <Bubbles />
         {bubbles.current.map((bubble) => (
     <Bubble
@@ -387,6 +428,7 @@ const worldMouseY = Math.round(camera.current.y + mouse.current.y);
     rotation={whale.current.rotation}
     facingRight={whale.current.facingRight}
 />
+
 <button
   onClick={() => {
     startWhale(whale.current);
@@ -453,10 +495,15 @@ const worldMouseY = Math.round(camera.current.y + mouse.current.y);
 <CoralInfoCard />
 
 <DoryNPC />
-
+<ExpeditionIntro />
 <DoryDialogue />
+<InfoButton />
+<InfoCard />
 
+<ReturnButton />
+<DepthMeter y={submarine.current.y} />
 </div>
+
 );
 
 }

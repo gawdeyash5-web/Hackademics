@@ -8,10 +8,10 @@ function Ship() {
             draggable={false}
             style={{
                 position: "absolute",
-                left: 2745,
-                top: 4383,
+                left: 2245,
+                top: 4083,
 
-                width: "900px", // Adjust if needed
+                width: "900px",
                 height: "auto",
 
                 pointerEvents: "none",
