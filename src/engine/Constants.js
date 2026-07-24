@@ -1,3 +1,5 @@
+// GAME CONSTANTS
+
 export const SUBMARINE_WIDTH = 380;
 export const SUBMARINE_HEIGHT = 160;
 
