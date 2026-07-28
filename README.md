@@ -13,22 +13,7 @@ The project has been initialized with React and Vite. Development is currently i
 - JavaScript
 - CSS
 
-## 📁 Current Structure
 
-```
-Hackademics/
-├── public/
-├── src/
-├── package.json
-├── vite.config.js
-└── README.md
-```
-
-## 📌 Progress
-
-- ✅ Repository created
-- ✅ React + Vite setup completed
-- 🚧 Development in progress
 
 ## 👥 Team
 
